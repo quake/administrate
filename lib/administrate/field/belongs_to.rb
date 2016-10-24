@@ -24,7 +24,12 @@ module Administrate
       private
 
       def candidate_resources
-        associated_class.public_send candidate_scope
+        if options.key?(:includes)
+          includes = options.fetch(:includes)
+          associated_class.includes(*includes).public_send candidate_scope
+        else
+          associated_class.public_send candidate_scope
+        end
       end
 
       def candidate_scope
